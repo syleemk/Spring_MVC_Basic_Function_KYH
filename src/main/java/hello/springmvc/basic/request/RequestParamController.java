@@ -1,7 +1,9 @@
 package hello.springmvc.basic.request;
 
+import hello.springmvc.basic.HelloData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -68,7 +70,7 @@ public class RequestParamController {
         log.info("username={}, age={}", username, age);
         return "ok";
     }
-    
+
     //defaultValue가 들어가면 required가 사실 필요없음
     //required가 true든 false든 값이 없으면 defaultValue가 들어감
     //또 defaultValue는 빈문자 ""의 경우에도 설정한 기본값이 적용된다!!
@@ -87,6 +89,29 @@ public class RequestParamController {
     public String requestParamMap(@RequestParam Map<String, Object> paramMap) {
 
         log.info("username={}, age={}", paramMap.get("username"), paramMap.get("age"));
+        return "ok";
+    }
+
+    /**
+     * @ModelAttribute 사용
+     * 참고: model.addAttribute(helloData) 코드도 함께 자동 적용됨, 뒤에 model을 설명할 때 자세히 설명
+     */
+    @ResponseBody
+    @RequestMapping("/model-attribute-v1")
+    public String modelAttributeV1(@ModelAttribute HelloData helloData) {
+        log.info("helloData={}", helloData);
+        return "ok";
+    }
+
+    /**
+     * @ModelAttribute 생략 가능
+     * String, int 같은 단순 타입 = @RequestParam
+     * argument resolver 로 지정해둔 타입 외 = @ModelAttribute
+     */
+    @ResponseBody
+    @RequestMapping("/model-attribute-v2")
+    public String modelAttributeV2(HelloData helloData) {
+        log.info("helloData={}", helloData);
         return "ok";
     }
 }
